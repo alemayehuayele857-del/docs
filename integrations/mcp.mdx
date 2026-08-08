@@ -1,7 +1,7 @@
 ---
 title: "Mintlify MCP: Connect Your Docs to AI Coding Agents"
 sidebarTitle: "MCP"
-description: "The Mintlify MCP server exposes your documentation to AI coding assistants like Cursor, Claude, and VS Code Copilot so they can answer questions from your docs."
+description: "The Mintlify MCP server gives AI coding assistants like Cursor, Claude, and VS Code Copilot direct access to search and retrieve your documentation."
 ---
 
 AI coding assistants are only as helpful as the context they can access. By connecting Mintlify to your AI tools via the Model Context Protocol, you give those assistants direct access to your documentation — so they can answer questions, surface code examples, and explain your API without you pasting content into the chat window manually.
@@ -63,11 +63,11 @@ The assistant cites which page it pulled from, so your team can follow up with t
 
 ## Using in VS Code
 
-Mintlify MCP works with **GitHub Copilot Chat** in VS Code. Add the MCP configuration to your VS Code workspace settings file (`.vscode/settings.json`):
+Mintlify MCP works with **GitHub Copilot Chat** in VS Code. Create a `.vscode/mcp.json` file in your project root with the following content:
 
-```json .vscode/settings.json
+```json .vscode/mcp.json
 {
-  "mcp.servers": {
+  "servers": {
     "mintlify": {
       "command": "npx",
       "args": ["-y", "@mintlify/mcp", "--docs", "https://your-docs.mintlify.app"]

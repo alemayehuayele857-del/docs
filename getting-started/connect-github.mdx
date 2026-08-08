@@ -1,10 +1,10 @@
 ---
-title: "Connect Your GitHub Repository to Mintlify"
+title: "Connect Your GitHub Repo to Mintlify for Auto-Deploy"
 sidebarTitle: "Connect GitHub"
-description: "Link a GitHub repository to your Mintlify workspace so every push automatically deploys your documentation site."
+description: "Link your GitHub repository to Mintlify so that every push to your default branch automatically rebuilds and publishes your documentation site."
 ---
 
-Mintlify uses your GitHub repository as the single source of truth for your documentation. Once you connect a repository, every push to your default branch triggers an automatic redeployment — no manual publishing steps, no CI pipelines to configure. This page walks you through installing the Mintlify GitHub App, granting repository access, and confirming your first live deployment.
+Mintlify uses your GitHub repository as the single source of truth for your documentation. Once you connect a repository, every push to your default branch triggers an automatic redeployment — no manual publishing steps, no external build tools to set up. This page walks you through installing the Mintlify GitHub App, granting repository access, and confirming your first live deployment.
 
 <Warning>
   Mintlify looks for `docs.json` at the repository root by default. If your docs live in a subdirectory (for example, `docs/`), you must configure the **docs root** in your Mintlify dashboard during setup. A missing or misconfigured `docs.json` path will cause your deployment to fail.

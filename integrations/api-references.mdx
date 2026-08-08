@@ -1,7 +1,7 @@
 ---
 title: "Auto-Generate API Reference Docs from OpenAPI Specs"
 sidebarTitle: "API References"
-description: "Point Mintlify at your OpenAPI or Swagger specification file to automatically generate a beautiful, interactive API reference with try-it-out functionality."
+description: "Point Mintlify at your OpenAPI or Swagger spec to automatically generate a beautiful, interactive API reference with try-it-out functionality."
 ---
 
 Mintlify reads your OpenAPI or Swagger specification and turns it into a fully interactive API reference — complete with request and response schemas, authentication inputs, and a live **Try It Out** panel. You maintain one spec file, and Mintlify keeps your docs in sync automatically on every deploy.
@@ -98,5 +98,5 @@ components:
 - **Local file**: Commit the updated `openapi.yaml` or `openapi.json` to your repository. The next deploy picks up the changes automatically.
 
 <Note>
-  If you do not have an OpenAPI spec yet, try the **Mintlify Scraper** tool. It crawls your existing REST API and generates an OpenAPI specification you can commit directly to your repository.
+  Already have an OpenAPI spec and want to scaffold all your MDX stub files automatically? Use the `@mintlify/scraping` package: run `npx @mintlify/scraping@latest openapi-file <your-spec-file> -o api-reference` to generate a ready-to-use MDX file for every endpoint in your spec.
 </Note>

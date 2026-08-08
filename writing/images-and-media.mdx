@@ -1,5 +1,5 @@
 ---
-title: "Images, Videos, and Media in Your Mintlify Docs"
+title: "Embedding Images, Videos, and Media in Mintlify Docs"
 sidebarTitle: "Images & Media"
 description: "Embed images, screenshots, videos, and iframes in your Mintlify documentation pages with proper sizing, captions, and dark mode support."
 ---
@@ -60,24 +60,21 @@ Use `type="glass"` for a softer background treatment that works well for dark sc
 
 ## Dark Mode Images
 
-When your docs site supports dark mode, some images — particularly those with white backgrounds — look jarring in dark mode. Provide separate light and dark variants by placing them inside a `<Frame>` and using the `className` prop to conditionally show each image.
+When your docs site supports dark mode, some images — particularly those with white backgrounds — look jarring in dark mode. The recommended approach is to prepare two versions of the image (one optimised for light mode, one for dark) and store both in your `/images/` folder with distinct names.
+
+<Tip>
+  Name your image variants consistently — for example `diagram-light.png` and `diagram-dark.png` — so they are easy to identify and update together.
+</Tip>
+
+Reference the appropriate variant in each context. For pages or sections that are always rendered in a single color scheme, use the matching image directly inside a `<Frame>`:
 
 ```mdx
-<Frame>
-  <img
-    className="block dark:hidden"
-    src="/images/diagram-light.png"
-    alt="Architecture diagram showing three services"
-  />
-  <img
-    className="hidden dark:block"
-    src="/images/diagram-dark.png"
-    alt="Architecture diagram showing three services"
-  />
+<Frame caption="Architecture diagram (light mode).">
+  <img src="/images/diagram-light.png" alt="Architecture diagram showing three services" />
 </Frame>
 ```
 
-The `block dark:hidden` and `hidden dark:block` utility classes toggle visibility based on the active color scheme.
+If your page content requires both variants to be present and toggled by the reader's system preference, contact [Mintlify support](https://mintlify.com/support) for guidance on the latest recommended pattern, as the approach may vary depending on your plan and site configuration.
 
 ## Embedding YouTube Videos
 

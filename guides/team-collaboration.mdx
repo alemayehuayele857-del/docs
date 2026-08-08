@@ -52,13 +52,13 @@ Every pull request to your docs repository automatically triggers a preview depl
 
 Mintlify integrates with popular AI coding and writing assistants, so your team can get context-aware help writing and editing documentation without leaving their editor.
 
-- **Load Mintlify writing skills into your AI assistant** by running the following command in your docs repository. This adds Mintlify-specific knowledge — component syntax, frontmatter conventions, and style guidelines — to your assistant's context:
+- **Connect Mintlify to your AI coding assistant via MCP.** The `@mintlify/mcp` package gives tools like Cursor, Claude, and VS Code Copilot direct access to your docs structure so they can suggest accurate page links, component names, navigation changes, and Mintlify-specific syntax. Add it to your MCP configuration:
 
   ```bash
-  npx skills add https://mintlify.com/docs
+  npx @mintlify/mcp
   ```
 
-- **Mintlify supports Cursor, Claude, and VS Code Copilot via MCP.** The Mintlify MCP server gives your AI assistant direct access to your docs structure so it can suggest accurate page links, component names, and navigation changes.
+- **Mintlify supports Cursor, Claude, and VS Code Copilot via MCP.** Once connected, your AI assistant has context about your docs repo and can generate MDX with correct frontmatter, valid component usage, and accurate internal links without extra prompting. See the [MCP integration guide](/integrations/mcp) for full setup instructions.
 
 ## Writing Conventions
 

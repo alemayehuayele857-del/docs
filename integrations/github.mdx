@@ -1,5 +1,5 @@
 ---
-title: "GitHub Integration: Push to Deploy Your Docs"
+title: "GitHub Integration: Automatic Documentation Deploys"
 sidebarTitle: "GitHub"
 description: "Mintlify connects directly to GitHub. Every push to your default branch automatically rebuilds and redeploys your documentation site."
 ---
@@ -42,13 +42,7 @@ my-repo/
     └── authentication.mdx
 ```
 
-If your docs live inside a subdirectory (for example, a mono-repo), configure the docs root path in `docs.json`:
-
-```json
-"basePath": "/docs"
-```
-
-Mintlify will resolve all content paths relative to that subdirectory.
+If your docs live inside a subdirectory, see the [Mono-repo support](#mono-repo-support) section below.
 
 ## Deploy status
 
@@ -80,10 +74,10 @@ preview-update-auth-guide.acme.mintlify.app
 
 ## Mono-repo support
 
-If your docs live in a subdirectory of a larger repository, set `basePath` in your `docs.json` to point Mintlify at the right folder:
+If your docs live in a subdirectory of a larger repository, set `docsDir` in your `docs.json` to point Mintlify at the right folder:
 
 ```json
-"basePath": "/docs"
+"docsDir": "docs"
 ```
 
 Mintlify will only watch for changes inside that path and will resolve all MDX and asset references relative to it. The rest of your repository remains unaffected.
