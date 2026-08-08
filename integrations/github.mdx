@@ -1,0 +1,89 @@
+---
+title: "GitHub Integration: Push to Deploy Your Docs"
+sidebarTitle: "GitHub"
+description: "Mintlify connects directly to GitHub. Every push to your default branch automatically rebuilds and redeploys your documentation site."
+---
+
+Mintlify is built around a GitHub-native workflow: your docs live in a repository, and every push automatically becomes a live deployment. There is no separate CLI publish step or manual upload — your repository is the single source of truth for your documentation site.
+
+## How it works
+
+Mintlify installs as a GitHub App on your account or organization. When you push changes to your tracked branch, GitHub sends a webhook to Mintlify, which pulls the latest content, builds the site, and deploys it — usually in under a minute. You get a continuous delivery pipeline for docs with zero extra tooling.
+
+## Installing the GitHub App
+
+<Steps>
+  <Step title="Open your Mintlify dashboard">
+    Log in at [dashboard.mintlify.com](https://dashboard.mintlify.com) and navigate to your workspace settings.
+  </Step>
+  <Step title="Click Connect GitHub">
+    Under the **Integrations** section, click **Connect GitHub** to begin the authorization flow.
+  </Step>
+  <Step title="Authorize the Mintlify GitHub App">
+    GitHub will ask you to approve the Mintlify GitHub App. Grant access to your account or the specific organization that owns your docs repository.
+  </Step>
+  <Step title="Select your repository and branch">
+    Choose the repository that contains your MDX files and `docs.json`, then confirm the branch Mintlify should track for production deployments.
+  </Step>
+</Steps>
+
+## Repository structure
+
+Mintlify expects your `docs.json` configuration file and MDX content files at the root of your repository by default. A typical layout looks like this:
+
+```
+my-repo/
+├── docs.json
+├── favicon.svg
+├── logo/
+│   └── light.svg
+├── quickstart.mdx
+└── guides/
+    └── authentication.mdx
+```
+
+If your docs live inside a subdirectory (for example, a mono-repo), configure the docs root path in `docs.json`:
+
+```json
+"basePath": "/docs"
+```
+
+Mintlify will resolve all content paths relative to that subdirectory.
+
+## Deploy status
+
+Every deployment is visible in the **Deployments** tab of your Mintlify dashboard. You can inspect build logs, see how long each deploy took, and identify any errors — such as broken MDX syntax or missing referenced files — before they affect your readers.
+
+## Branch previews
+
+Every pull request automatically receives a preview deployment. Share the preview URL with reviewers so they can see exactly how the docs will look before you merge.
+
+Preview URLs follow this pattern:
+
+```
+preview-<branch>.<workspace>.mintlify.app
+```
+
+For example, a branch named `update-auth-guide` in the `acme` workspace would be available at:
+
+```
+preview-update-auth-guide.acme.mintlify.app
+```
+
+<Note>
+  Only pushes to your default branch (usually `main`) trigger a production deployment. Pushes to all other branches create preview deployments only.
+</Note>
+
+<Tip>
+  Share branch preview URLs in pull request descriptions as part of your documentation review process. Reviewers can read the rendered docs — including interactive components — without checking out the branch locally.
+</Tip>
+
+## Mono-repo support
+
+If your docs live in a subdirectory of a larger repository, set `basePath` in your `docs.json` to point Mintlify at the right folder:
+
+```json
+"basePath": "/docs"
+```
+
+Mintlify will only watch for changes inside that path and will resolve all MDX and asset references relative to it. The rest of your repository remains unaffected.

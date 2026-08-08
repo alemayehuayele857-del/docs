@@ -1,24 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Mintlify",
+  "projectType": "saas",
+  "projectName": "Mintlify",
+  "projectDescription": "Mintlify is a documentation platform that lets teams build beautiful, AI-powered docs sites from MDX files with zero infrastructure overhead.",
   "theme": "luma",
-  "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
-  },
-  "favicon": "/favicon.svg",
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Get Started Free",
-      "href": "https://mintlify.com"
-    }
-  },
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
   "navigation": {
     "tabs": [
       {
@@ -93,11 +80,24 @@
       }
     ]
   },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
-  }
+  "keyFeatures": [
+    "MDX-based documentation pages with rich component library",
+    "AI-powered search and chat across documentation",
+    "GitHub-native workflow — push to deploy",
+    "OpenAPI / Swagger integration for auto-generated API references",
+    "Custom branding, themes, and custom domain support",
+    "Analytics dashboard to understand reader engagement",
+    "Versioning and localization support",
+    "MCP (Model Context Protocol) server for AI agent integration"
+  ],
+  "publicApiSurface": [
+    "docs.json — site configuration schema",
+    "mint dev — local development CLI command",
+    "mint validate — configuration validation CLI command",
+    "mint broken-links — broken link checker CLI command",
+    "npx skills add — AI-assisted writing command",
+    "MDX frontmatter fields: title, description, icon, sidebarTitle",
+    "Navigation schema: tabs, groups, pages, anchors, dropdowns",
+    "Component library: Card, CardGroup, CodeBlock, Tabs, Steps, Callout, Accordion, Frame, Tooltip, Snippet"
+  ]
 }

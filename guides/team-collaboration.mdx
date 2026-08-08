@@ -1,0 +1,78 @@
+---
+title: "Collaborate on Documentation with Your Team in Mintlify"
+sidebarTitle: "Team Collaboration"
+description: "Invite teammates, manage permissions, use branch previews for review, and leverage AI writing tools to scale your documentation team's output."
+---
+
+Good documentation is a team effort. Mintlify is built around a GitHub-native workflow, which means your whole team — engineers, technical writers, product managers, and designers — can contribute to docs using the same pull request process they use for code. This guide covers how to invite teammates, manage their permissions, use branch previews to review changes before they go live, and make the most of Mintlify's AI writing tools.
+
+## Inviting Team Members
+
+Give teammates access to your Mintlify dashboard so they can view deployments, manage settings, and collaborate on your docs site.
+
+<Steps>
+  <Step title="Go to Dashboard → Settings → Team">
+    Open your Mintlify dashboard, select your project, and navigate to **Settings** in the left sidebar. Click the **Team** tab.
+  </Step>
+  <Step title="Click Invite Member">
+    Click the **Invite Member** button in the top-right corner of the Team page.
+  </Step>
+  <Step title="Enter their email address">
+    Type the email address of the person you want to invite. They do not need a Mintlify account yet — an invitation email will prompt them to create one.
+  </Step>
+  <Step title="Assign a role">
+    Choose the appropriate role for this team member. See the roles table below for a breakdown of what each role can do.
+  </Step>
+  <Step title="They receive an email invitation">
+    Mintlify sends an invitation email to the address you provided. Once they accept, they appear as an active member in your Team settings.
+  </Step>
+</Steps>
+
+### Team Roles
+
+| Role | Permissions |
+|------|-------------|
+| Owner | Full access including billing and settings |
+| Editor | Can edit docs and manage deployments |
+| Viewer | Read-only access to the dashboard |
+
+## Branch Previews for Review
+
+Every pull request to your docs repository automatically triggers a preview deployment. Use these previews to review changes before they reach your live site.
+
+- **Every pull request gets a unique preview URL.** Mintlify builds a full version of your docs from the PR branch and posts the preview link as a GitHub status check on the pull request.
+- **Share the preview link with reviewers.** Paste the URL in your PR description, Slack, or wherever your team reviews work. Reviewers can read the rendered docs exactly as they will appear after merging — no local setup required.
+- **Preview URLs expire when the PR is closed.** Once a pull request is merged or closed, its preview deployment is automatically cleaned up. The live site reflects the merged content.
+
+<Tip>
+  Set up branch protection on your `main` branch in GitHub so that all docs changes must go through a pull request. Require at least one reviewer approval before merging. This ensures every change to your live docs has been reviewed by a human and passed a Mintlify preview build.
+</Tip>
+
+## AI Writing Assistance
+
+Mintlify integrates with popular AI coding and writing assistants, so your team can get context-aware help writing and editing documentation without leaving their editor.
+
+- **Load Mintlify writing skills into your AI assistant** by running the following command in your docs repository. This adds Mintlify-specific knowledge — component syntax, frontmatter conventions, and style guidelines — to your assistant's context:
+
+  ```bash
+  npx skills add https://mintlify.com/docs
+  ```
+
+- **Mintlify supports Cursor, Claude, and VS Code Copilot via MCP.** The Mintlify MCP server gives your AI assistant direct access to your docs structure so it can suggest accurate page links, component names, and navigation changes.
+
+## Writing Conventions
+
+Consistent style across contributors keeps your docs professional and reduces review friction. A few practices that help at scale:
+
+- **Keep an `AGENTS.md` file in your repo.** Document your team's voice, tone, formatting preferences, and any product-specific terminology in an `AGENTS.md` file at the repo root. Both human contributors and AI assistants use this file to stay on-brand and consistent.
+
+  ```mdx AGENTS.md
+  # Documentation Style Guide
+
+  - Write in second person ("you").
+  - Use active voice and imperative mood for instructions.
+  - Every page must open with a plain prose paragraph before any component.
+  - Prefer Mintlify built-in components over custom HTML.
+  ```
+
+- **Use Mintlify's Snippet system to keep repeated content in sync.** Any content that appears on more than one page — a standard warning, a prerequisite step, a shared code sample — should live in a `/snippets/` file. Update it once and every page that imports it picks up the change automatically.

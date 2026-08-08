@@ -1,0 +1,55 @@
+---
+title: "Set Up a Custom Domain for Your Mintlify Site"
+sidebarTitle: "Custom Domain"
+description: "Point your own domain or subdomain to your Mintlify documentation site. Add a CNAME record and configure the domain in your workspace settings."
+---
+
+By default, every Mintlify site is served from a `*.mintlify.app` subdomain. Connecting a custom domain — such as `docs.myproduct.com` — gives your documentation a polished, professional home that fits seamlessly into your existing web presence. The process takes about five minutes of configuration; DNS propagation does the rest.
+
+<Note>
+  Mintlify strongly recommends using a **subdomain** (e.g., `docs.myproduct.com`) rather than an apex domain (e.g., `myproduct.com`) for your documentation. Apex domains require `A` or `ALIAS` records, which not all DNS providers support for external services. Subdomains use a standard `CNAME` record that works universally and is simpler to set up and change later.
+</Note>
+
+## Setup steps
+
+<Steps>
+  <Step title="Open Custom Domain settings">
+    Log in to your [Mintlify dashboard](https://dashboard.mintlify.com), navigate to your workspace, and go to **Settings → Custom Domain**.
+  </Step>
+
+  <Step title="Enter your desired domain">
+    Type the full subdomain you want to use — for example, `docs.myproduct.com` — and click **Save**. Mintlify will generate a CNAME target value specific to your workspace.
+  </Step>
+
+  <Step title="Copy your CNAME target">
+    After saving, Mintlify displays a CNAME value in the format `<your-workspace>.mintlify.app`. Copy this value — you'll add it to your DNS configuration in the next step.
+  </Step>
+
+  <Step title="Add a CNAME record in your DNS provider">
+    Log in to the DNS provider where your domain is registered (e.g., Cloudflare, Route 53, Namecheap) and create a new DNS record with the following values:
+
+    | Record Type | Host | Value |
+    |-------------|------|-------|
+    | `CNAME` | `docs` | `<your-workspace>.mintlify.app` |
+
+    The **Host** field is the subdomain prefix only — enter `docs`, not `docs.myproduct.com`. Some providers label this field "Name" or "Subdomain". The **Value** (sometimes labeled "Target" or "Points to") is the full `<your-workspace>.mintlify.app` string you copied from the Mintlify dashboard.
+  </Step>
+
+  <Step title="Wait for DNS propagation">
+    DNS changes don't take effect instantly — they need to propagate across the global DNS network. This typically takes between a few minutes and a few hours, but can occasionally take longer.
+
+    You can check propagation status using a tool like [dnschecker.org](https://dnschecker.org) to confirm your CNAME record is visible worldwide.
+  </Step>
+
+  <Step title="SSL certificate is provisioned automatically">
+    Once Mintlify detects that your DNS record is resolving correctly, it automatically provisions a TLS/SSL certificate for your domain. Your docs will be served over HTTPS with no manual certificate management required.
+  </Step>
+</Steps>
+
+<Warning>
+  DNS changes can take up to **48 hours** to fully propagate in some regions or with certain DNS providers. If your custom domain isn't resolving after a few hours, double-check that the CNAME record was saved correctly — typos in the host or value are the most common cause of delays.
+</Warning>
+
+<Info>
+  SSL certificates are provisioned and renewed automatically by Mintlify. You don't need to purchase, upload, or renew a certificate — the process is entirely managed for you.
+</Info>

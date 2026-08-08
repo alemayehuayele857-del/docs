@@ -1,0 +1,123 @@
+---
+title: "Set Up Interactive API Reference with OpenAPI"
+sidebarTitle: "OpenAPI Setup"
+description: "Generate a fully interactive API reference in Mintlify from your OpenAPI or Swagger spec, with try-it-out requests and automatic authentication handling."
+---
+
+Mintlify turns your OpenAPI or Swagger specification into a polished, interactive API reference with zero manual formatting. Each endpoint gets its own page with parameter tables, request/response examples, and a live "Try It Out" panel that lets readers send real API calls directly from the docs. This guide walks you through connecting your spec, generating endpoint pages, and configuring authentication.
+
+<Steps>
+  <Step title="Prepare your OpenAPI spec">
+    Make sure your spec is valid **OpenAPI 3.0**, **OpenAPI 3.1**, or **Swagger 2.0** in either JSON or YAML format. You can host it at a public URL (for example, as a route on your API server) or commit the file directly to your docs repository.
+
+    To validate your spec before connecting it to Mintlify, use the [Swagger Editor](https://editor.swagger.io) or run:
+
+    ```bash
+    npx @redocly/cli lint openapi.yaml
+    ```
+  </Step>
+
+  <Step title="Add the spec to docs.json">
+    Open your `docs.json` and add an `openapi` field at the top level pointing to your spec. This can be a URL or a relative file path within your repo:
+
+    ```json docs.json
+    {
+      "openapi": "https://api.example.com/openapi.json"
+    }
+    ```
+
+    To use a file committed to your repo instead:
+
+    ```json docs.json
+    {
+      "openapi": "/openapi.yaml"
+    }
+    ```
+  </Step>
+
+  <Step title="Create MDX stubs for each endpoint">
+    Each API operation needs a corresponding `.mdx` file. The file only needs frontmatter — Mintlify fills in all the endpoint detail automatically by matching the `openapi` field to your spec.
+
+    ```mdx api-reference/users/list-users.mdx
+    ---
+    title: "List Users"
+    openapi: "GET /users"
+    ---
+    ```
+
+    The value of `openapi` is the HTTP method followed by the path, exactly as it appears in your spec. Create one file per operation you want to expose in your docs.
+  </Step>
+
+  <Step title="Add API pages to navigation">
+    List every endpoint stub in your `docs.json` navigation. Group related endpoints together for a cleaner sidebar:
+
+    ```json docs.json
+    {
+      "navigation": [
+        {
+          "tab": "API Reference",
+          "groups": [
+            {
+              "group": "Users",
+              "pages": [
+                "api-reference/users/list-users",
+                "api-reference/users/create-user",
+                "api-reference/users/delete-user"
+              ]
+            },
+            {
+              "group": "Authentication",
+              "pages": [
+                "api-reference/auth/get-token",
+                "api-reference/auth/refresh-token"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    ```
+  </Step>
+
+  <Step title="Configure authentication">
+    Mintlify reads the `securitySchemes` block from your OpenAPI spec and automatically renders the correct input fields on every endpoint page. For example, a Bearer token scheme:
+
+    ```yaml openapi.yaml
+    components:
+      securitySchemes:
+        BearerAuth:
+          type: http
+          scheme: bearer
+    security:
+      - BearerAuth: []
+    ```
+
+    Readers enter their credentials once in the "Authorization" panel and Mintlify applies them to every Try It Out request automatically. You do not need to add any extra configuration in `docs.json`.
+  </Step>
+
+  <Step title="Test Try It Out">
+    Deploy your docs (or run `npx mintlify dev` locally) and open any endpoint page. You should see:
+
+    - A parameter table populated from your spec
+    - Request and response schema documentation
+    - A **Try It Out** panel where you can enter values and send a live request
+
+    If the panel is missing, confirm that the `openapi` frontmatter field exactly matches the HTTP method and path in your spec, including case.
+  </Step>
+</Steps>
+
+<Tip>
+  Add an `operationId` to every operation in your spec. Mintlify uses the `operationId` to generate stable, human-readable URL slugs for each endpoint page. Without it, slugs are derived from the path and may change if you reorganize your spec.
+
+  ```yaml
+  paths:
+    /users:
+      get:
+        operationId: listUsers
+        summary: List all users
+  ```
+</Tip>
+
+<Warning>
+  If you host your OpenAPI spec at a remote URL, it must be publicly accessible from the internet. Mintlify's build servers fetch the spec on each deployment, and a private or firewalled URL will cause the build to fail. If your spec is sensitive, commit the file directly to your (private) docs repository instead.
+</Warning>

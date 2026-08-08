@@ -1,0 +1,89 @@
+---
+title: "Build Custom React Components for Your Mintlify Docs"
+sidebarTitle: "Custom Components"
+description: "Create custom MDX components using React and JSX to add unique interactive elements, styled UI blocks, or product-specific widgets to your documentation."
+---
+
+Mintlify's built-in component library covers the most common documentation patterns, but sometimes your product needs something unique — a custom pricing table, an interactive diagram, or a branded callout style that matches your design system. Because Mintlify pages are MDX, you can import and use any React component directly alongside your prose content. This guide explains how to create components, use them in pages, and share reusable content blocks across your docs with snippets.
+
+<Tip>
+  Before building a custom component, check whether one of Mintlify's built-in components — `<Card>`, `<CardGroup>`, `<Tabs>`, `<Steps>`, `<Accordion>`, `<Frame>`, and others — already covers your use case. Built-in components are maintained by Mintlify, render consistently across themes, and require no imports.
+</Tip>
+
+## Creating a Custom Component
+
+Create a `.jsx` or `.tsx` file anywhere in your repository. A `components/` directory at the repo root is a clean convention, but any path works. Write a standard React functional component and export it as a named export:
+
+```jsx components/MyAlert.jsx
+export function MyAlert({ type, children }) {
+  return (
+    <div className={`alert alert-${type}`}>
+      {children}
+    </div>
+  );
+}
+```
+
+You can use props, conditional rendering, and any standard React patterns. Keep components focused — one component per file makes imports clean and reuse straightforward.
+
+## Using Custom Components in MDX
+
+Import your component at the top of any `.mdx` file, then use it anywhere in the page body just like a built-in Mintlify component:
+
+```mdx
+import { MyAlert } from '/components/MyAlert';
+
+<MyAlert type="info">
+  This is a custom alert component.
+</MyAlert>
+```
+
+The import path is relative to the **repo root**, not to the current file. Use an absolute-style path starting with `/` to avoid confusion when your MDX files are nested in subdirectories.
+
+<Info>
+  Mintlify supports all standard React hooks (`useState`, `useEffect`, `useRef`, and so on) and browser APIs inside custom components. You can build fully interactive widgets — dropdowns, toggles, copy buttons, live calculators — and embed them directly in your documentation pages.
+</Info>
+
+## Snippets for Reusable Content Blocks
+
+Snippets are MDX files designed to be imported into other pages. They are ideal for content that repeats across many pages — standard warnings, shared prerequisites, consistent code samples, or boilerplate setup instructions. Place snippet files in a `/snippets/` directory at the repo root.
+
+Create a snippet file as a regular `.mdx` file. You can use any Mintlify components inside it:
+
+```mdx snippets/common-warning.mdx
+<Warning>
+  Always back up your data before making changes. This operation cannot be undone.
+</Warning>
+```
+
+## Using Snippets
+
+Import the snippet file into any page using a default import, then render it as a component:
+
+```mdx
+import CommonWarning from '/snippets/common-warning.mdx';
+
+Before you proceed, read this important note:
+
+<CommonWarning />
+```
+
+Snippets can contain any valid MDX content — prose, components, code blocks, tables, or nested imports. When you update the snippet file, every page that imports it picks up the change automatically on the next deployment.
+
+## Passing Props to Snippets
+
+Snippets also accept props, which makes them more flexible than static includes. Define the prop in your snippet using curly brace interpolation:
+
+```mdx snippets/api-note.mdx
+<Note>
+  This endpoint requires the `{apiVersion}` version of the API or later.
+</Note>
+```
+
+Then pass the value when you use the snippet:
+
+```mdx
+import ApiNote from '/snippets/api-note.mdx';
+
+<ApiNote apiVersion="v2" />
+```

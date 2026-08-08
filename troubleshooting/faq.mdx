@@ -1,0 +1,84 @@
+---
+title: "Mintlify Frequently Asked Questions"
+sidebarTitle: "FAQ"
+description: "Answers to the most common questions about Mintlify pricing, publishing, GitHub integration, OpenAPI support, and documentation site features."
+---
+
+These are the questions our users ask most often. If you don't find what you're looking for here, check the rest of the docs or post in the [Mintlify community Discord](https://mintlify.com/community) where the team and other users are active.
+
+## Getting Started
+
+<AccordionGroup>
+  <Accordion title="Is Mintlify free?">
+    Yes. Mintlify offers a free plan that lets you publish a full docs site with AI-powered search, built-in components, and GitHub-based deployments at no cost. Paid plans unlock additional features including custom domains, detailed analytics, password protection, advanced team collaboration, and priority support. See the [pricing page](https://mintlify.com/pricing) for a full breakdown.
+  </Accordion>
+
+  <Accordion title="Do I need to know how to code?">
+    Basic Markdown knowledge is enough to get started. If you can write a bullet list and a code block in Markdown, you can create Mintlify pages. MDX (Markdown with JSX) and custom React components are completely optional — they let you add interactive elements and custom UI, but your docs will look great without them. Engineers on your team can handle the initial setup of `docs.json` and GitHub while writers focus on content.
+  </Accordion>
+
+  <Accordion title="Can I use Mintlify without GitHub?">
+    GitHub is currently required to deploy a Mintlify docs site. Mintlify installs as a GitHub App, listens for pushes to your default branch, and deploys automatically. GitLab support is on the public roadmap. If you use GitLab or another Git host, you can follow the roadmap or contact the Mintlify team to express interest.
+  </Accordion>
+</AccordionGroup>
+
+## Publishing & Deployment
+
+<AccordionGroup>
+  <Accordion title="How long does a deployment take?">
+    Most deployments complete in **30 to 90 seconds** after a push to your default branch. Larger sites with many pages or a remote OpenAPI spec may take slightly longer due to spec fetching. You can watch the progress in real time on the **Deployments** page in your Mintlify dashboard.
+  </Accordion>
+
+  <Accordion title="Can I roll back a deployment?">
+    Yes. Every deployment is preserved in your deployment history. To roll back, go to your **Mintlify dashboard → Deployments**, find the previous deployment you want to restore, and click **Redeploy**. Mintlify rebuilds your site from that snapshot and makes it live within seconds.
+  </Accordion>
+
+  <Accordion title="Can I password-protect my docs?">
+    Yes, on paid plans. You can restrict access to your docs site in two ways:
+
+    - **Password protection** — require visitors to enter a password before viewing any page.
+    - **Email domain allowlist** — restrict access to visitors who sign in with an email address from a specific domain (for example, `@yourcompany.com`).
+
+    Both options are available in **Dashboard → Settings → Access Control**.
+  </Accordion>
+</AccordionGroup>
+
+## Content & Customization
+
+<AccordionGroup>
+  <Accordion title="Can I use my own React components?">
+    Yes. Create a `.jsx` or `.tsx` file anywhere in your docs repository and import it into any `.mdx` page using a standard ES module import:
+
+    ```mdx
+    import { MyComponent } from '/components/MyComponent';
+
+    <MyComponent prop="value" />
+    ```
+
+    Mintlify supports all standard React hooks and browser APIs inside custom components. See the [Custom Components guide](/guides/custom-components) for a full walkthrough.
+  </Accordion>
+
+  <Accordion title="Does Mintlify support dark mode?">
+    Yes. All Mintlify themes support automatic light and dark mode switching out of the box. The mode follows the visitor's operating system preference by default, and a toggle in the top navigation lets visitors switch manually. You don't need to configure anything — dark mode works on all pages, including custom components that use Mintlify's CSS variables for colors.
+  </Accordion>
+
+  <Accordion title="How do I add a search bar?">
+    You don't — it's already there. Mintlify includes AI-powered search on every docs site by default, on all plans. The search bar appears in the top navigation automatically and indexes all your pages. Visitors can search by keyword or ask natural-language questions and get answers drawn from your content.
+  </Accordion>
+</AccordionGroup>
+
+## API Reference
+
+<AccordionGroup>
+  <Accordion title="Does Mintlify support OpenAPI and Swagger?">
+    Yes. Mintlify supports **OpenAPI 3.0**, **OpenAPI 3.1**, and **Swagger 2.0** in both JSON and YAML formats. Point `docs.json` at your spec file (hosted remotely or committed to your repo) and create a small MDX stub for each endpoint. Mintlify generates full parameter tables, schema documentation, and authentication fields automatically. See the [OpenAPI Setup guide](/guides/openapi-setup) for step-by-step instructions.
+  </Accordion>
+
+  <Accordion title="Can I show a Try It button for API calls?">
+    Yes. The **Try It Out** panel is a built-in feature of every API reference page generated from an OpenAPI spec. Readers can fill in parameters, enter their credentials, and send a live request to your API without leaving the docs. No extra configuration is needed — the panel appears automatically on all OpenAPI-backed pages.
+  </Accordion>
+
+  <Accordion title="How do I keep my API reference up to date?">
+    Host your OpenAPI spec at a public URL on your API server (for example, `https://api.example.com/openapi.json`) and point `docs.json` at that URL. Mintlify re-fetches the spec on every deployment, so your API reference always reflects the latest version of your spec as long as you keep the hosted file current. If you prefer, you can also commit the spec file directly to your docs repo and update it as part of your release process.
+  </Accordion>
+</AccordionGroup>

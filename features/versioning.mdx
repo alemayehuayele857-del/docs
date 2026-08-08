@@ -1,0 +1,59 @@
+---
+title: "Document Multiple Product Versions with Mintlify"
+sidebarTitle: "Versioning"
+description: "Serve documentation for multiple versions of your product simultaneously using Mintlify's versioning feature, keeping older users supported."
+---
+
+When your product ships breaking changes, your documentation needs to keep up — without abandoning the users who haven't upgraded yet. Mintlify's versioning feature lets you maintain separate documentation sets for multiple product versions simultaneously, each with its own navigation, content, and page structure, all served from the same docs site.
+
+## When to use versioning
+
+Versioning is the right tool when you have **breaking changes between product versions** — API changes, renamed concepts, removed features, or entirely new workflows that don't apply to older versions. If your changes are purely additive or backward-compatible, you may not need full versioning; a simple callout or note on the affected page is often enough.
+
+Reserve versioned docs for situations where a user on an older version would genuinely be confused or misled by reading the current documentation.
+
+## How it works
+
+Each version in Mintlify is a distinct set of pages with its own navigation structure. Readers select their version using the version switcher in the navbar, and the entire docs site updates to reflect that version's content and navigation. Versions don't share navigation — each one is independently configured.
+
+## Configuring versions in docs.json
+
+Declare your versions as an ordered array in `docs.json`. The first item in the array is treated as the default version shown to new visitors:
+
+```json
+"versions": ["v2", "v1"]
+```
+
+List versions from newest to oldest. The first entry is your current version; older versions follow in descending order.
+
+## Per-page versioning
+
+Tag individual pages with a specific version using the `version` frontmatter field:
+
+```mdx
+---
+version: "v2"
+---
+```
+
+Pages tagged with a version only appear when that version is active. Pages without a `version` tag appear in all versions, which is useful for content that hasn't changed — like conceptual overviews or company policies.
+
+<Warning>
+  Versioned pages must still be listed in the navigation configuration in `docs.json`. Adding the `version` frontmatter tag alone is not enough — if a page isn't included in the nav, it won't be accessible to readers.
+</Warning>
+
+## Version switcher
+
+When you define two or more versions in `docs.json`, Mintlify automatically adds a version switcher to the navbar. Readers use it to move between versions. No additional configuration is needed to enable the switcher — it appears as soon as multiple versions are declared.
+
+## Recommended workflow
+
+Follow these practices to keep versioned docs manageable over time:
+
+- **Keep the latest version as the default** — always list your newest version first in the `versions` array so new readers land on current content
+- **Archive, don't delete older versions** — removing old version pages leaves users on older releases without support; keep them available even if you stop actively updating them
+- **Mark archived versions clearly** — add a banner or callout at the top of older version pages to let readers know they're viewing legacy documentation
+
+<Tip>
+  On version-specific pages that introduce breaking changes, add a prominent callout at the top explaining what changed and linking to a migration guide. Readers upgrading from an older version will thank you.
+</Tip>

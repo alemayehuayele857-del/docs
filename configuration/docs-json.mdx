@@ -1,0 +1,164 @@
+---
+title: "docs.json: Complete Mintlify Configuration Reference"
+sidebarTitle: "docs.json"
+description: "A complete reference for the docs.json configuration file — the central config for your Mintlify site's theme, navigation, branding, and integrations."
+---
+
+The `docs.json` file is the single configuration file that controls your entire Mintlify site. Every setting — from your brand colors and logo to your navigation structure and footer links — lives here. Place it at the root of your docs repository and Mintlify will pick it up automatically on every deployment.
+
+## Complete example
+
+The following example covers all major configuration areas. Use it as a starting point and remove any sections that don't apply to your project.
+
+```json docs.json
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "My Product Docs",
+  "theme": "luma",
+  "colors": {
+    "primary": "#0F9B5B",
+    "light": "#07C983",
+    "dark": "#0D9373"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Get Started",
+      "href": "https://app.example.com"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          { "group": "Get Started", "pages": ["introduction", "quickstart"] }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/my-org",
+      "x": "https://x.com/my-product"
+    }
+  }
+}
+```
+
+<Tip>
+  Run `npx mintlify validate` in your docs directory to check your `docs.json` for errors before deploying. The CLI will surface missing required fields, invalid color values, and broken page references.
+</Tip>
+
+## Field reference
+
+### Core fields
+
+<ParamField body="$schema" type="string">
+  Always set this to `https://mintlify.com/docs.json`. It enables JSON Schema validation and autocompletion in editors like VS Code, so you catch configuration mistakes before deploying.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  The name of your documentation site, shown in browser tabs and the navbar. Keep it short — typically your product or company name.
+</ParamField>
+
+<ParamField body="theme" type="string">
+  The visual theme applied to your site. Accepted values: `luma`, `willow`, `palm`, `almond`, `aspen`, `maple`, `sequoia`. Defaults to `luma` if omitted. See the [Branding](/configuration/branding) page for a full description of each theme.
+</ParamField>
+
+<ParamField body="favicon" type="string">
+  Path to your favicon file, relative to the root of your docs repository. SVG and PNG formats are supported. Recommended size for PNG is 32×32px.
+
+  ```json
+  "favicon": "/favicon.svg"
+  ```
+</ParamField>
+
+---
+
+### `colors`
+
+Controls the primary palette used throughout your site for links, buttons, and interactive elements.
+
+<ParamField body="colors.primary" type="string" required>
+  Your primary brand color as a hex value (e.g., `#0F9B5B`). Used for links, active sidebar items, and call-to-action elements across both light and dark modes when `light`/`dark` overrides are not set.
+</ParamField>
+
+<ParamField body="colors.light" type="string">
+  A lighter color variant used in light mode contexts. If omitted, `primary` is used instead. Provide this when your primary color needs a brighter version to remain accessible on white backgrounds.
+</ParamField>
+
+<ParamField body="colors.dark" type="string">
+  A darker color variant used in dark mode contexts. If omitted, `primary` is used instead. Provide this when your primary color needs a deeper version to remain accessible on dark backgrounds.
+</ParamField>
+
+---
+
+### `logo`
+
+<ParamField body="logo.light" type="string">
+  Path to the logo image displayed in light mode, relative to the root of your docs repository. SVG is recommended for crisp rendering at all screen densities.
+
+  ```json
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  }
+  ```
+</ParamField>
+
+<ParamField body="logo.dark" type="string">
+  Path to the logo image displayed in dark mode. Supply a version of your logo optimized for dark backgrounds — typically lighter or inverted compared to the light variant.
+</ParamField>
+
+<ParamField body="logo.href" type="string">
+  The URL the logo links to when clicked. Defaults to `/` (the root of your docs site). Set this to your marketing site URL if you want the logo to navigate users away from the docs.
+</ParamField>
+
+---
+
+### `navbar`
+
+<ParamField body="navbar.primary" type="object">
+  The primary call-to-action displayed in the top navigation bar. Supports a `button` type with a `label` and `href`.
+
+  ```json
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Get Started",
+      "href": "https://app.example.com"
+    }
+  }
+  ```
+</ParamField>
+
+---
+
+### `navigation`
+
+<ParamField body="navigation" type="object" required>
+  Defines the structure of your sidebar and top-level tabs. Must be an object containing either a `tabs` array (for multi-tab sites) or a `groups` array (for single-section sites). See the [Navigation](/configuration/navigation) page for a full breakdown.
+</ParamField>
+
+---
+
+### `footer`
+
+<ParamField body="footer.socials" type="object">
+  A map of social network keys to URLs. Mintlify renders these as icon links in your site footer. Supported keys include `github`, `x`, `linkedin`, `discord`, `slack`, `youtube`, `instagram`, `facebook`, and `website`.
+
+  ```json
+  "footer": {
+    "socials": {
+      "github": "https://github.com/my-org",
+      "x": "https://x.com/my-product"
+    }
+  }
+  ```
+</ParamField>

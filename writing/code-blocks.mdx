@@ -1,0 +1,155 @@
+---
+title: "Code Blocks and Syntax Highlighting in Mintlify"
+sidebarTitle: "Code Blocks"
+description: "Add syntax-highlighted code blocks, multi-file code groups, line highlights, and diff markers to your Mintlify documentation pages."
+---
+
+Mintlify renders code blocks using [Shiki](https://shiki.style/), a grammar-based syntax highlighter that produces accurate, token-level highlighting for over 100 languages. Beyond basic highlighting, Mintlify extends the standard fenced code block syntax with props for filenames, line numbers, highlights, focus regions, diff markers, and collapsible sections — giving you fine-grained control over how code appears on the page.
+
+<Warning>
+  Never wrap code blocks in custom styled `div` elements or raw HTML containers. Custom wrappers break Mintlify's rendering pipeline and produce inconsistent output. Use the built-in props and `<CodeGroup>` instead.
+</Warning>
+
+## Basic Fenced Code Blocks
+
+Open a fenced code block with triple backticks followed by a language identifier. Mintlify uses the language tag to select the correct grammar for highlighting.
+
+````mdx
+```typescript
+const greeting = (name: string): string => {
+  return `Hello, ${name}!`;
+};
+```
+````
+
+## Adding a Filename
+
+Place a filename after the language tag, separated by a space. Mintlify displays the filename in a tab above the code block.
+
+````mdx
+```typescript index.ts
+const greeting = (name: string): string => {
+  return `Hello, ${name}!`;
+};
+```
+````
+
+## Adding an Icon
+
+Add an `icon` prop with a Font Awesome icon name to display an icon in the code block header alongside the filename.
+
+````mdx
+```bash icon="terminal"
+npm install my-package
+```
+````
+
+## Line Numbers
+
+Add the `lines` prop to display line numbers in the gutter. This is especially useful for code blocks you reference by line number in surrounding prose.
+
+````mdx
+```python lines
+def add(a, b):
+    return a + b
+
+result = add(3, 4)
+print(result)
+```
+````
+
+## Line Highlights
+
+Use `highlight` with a comma-separated list of line numbers or ranges to draw attention to specific lines. Highlighted lines appear with a colored background while the rest of the block stays at normal contrast.
+
+````mdx
+```typescript highlight={1,3-5}
+import { createClient } from "./client";
+
+const client = createClient({
+  apiKey: process.env.API_KEY,
+  region: "us-east-1",
+});
+```
+````
+
+## Focus Mode
+
+Use `focus` to dim every line outside the specified range. This is useful when showing a small change in a larger file without removing the surrounding context.
+
+````mdx
+```typescript focus={2-4}
+// Full config shown for context
+const client = createClient({
+  apiKey: process.env.API_KEY,
+});
+// Rest of file continues...
+```
+````
+
+## Expandable Code Blocks
+
+Add the `expandable` prop to collapse long code blocks behind a "Show more" toggle. The block shows a preview by default and expands when the reader clicks.
+
+````mdx
+```json expandable
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.18.2",
+    "lodash": "^4.17.21",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "eslint": "^8.55.0"
+  }
+}
+```
+````
+
+## Line Wrapping
+
+Add the `wrap` prop to enable soft-wrapping of long lines instead of horizontal scrolling. Use this for prose-like content such as log output or long command strings.
+
+````mdx
+```bash wrap
+curl -X POST https://api.example.com/v1/endpoint -H "Authorization: Bearer YOUR_API_KEY" -H "Content-Type: application/json" -d '{"key": "value"}'
+```
+````
+
+## Diff Markers
+
+Mark individual lines as additions or deletions using inline comments. Mintlify renders them with green and red backgrounds, just like a Git diff.
+
+````mdx
+```typescript
+function greet(name: string) {
+  console.log("Hello, world!"); // [!code --]
+  console.log(`Hello, ${name}!`); // [!code ++]
+}
+```
+````
+
+## CodeGroup: Multi-Language Examples
+
+Use `<CodeGroup>` to display several code blocks in a tabbed interface. This is the standard pattern for showing the same operation across multiple package managers, languages, or frameworks.
+
+````mdx
+<CodeGroup>
+  ```bash npm
+  npm install my-package
+  ```
+
+  ```bash yarn
+  yarn add my-package
+  ```
+
+  ```bash pnpm
+  pnpm add my-package
+  ```
+</CodeGroup>
+````
+
+Each tab label comes from the filename field — in the example above, `npm`, `yarn`, and `pnpm` become the tab titles. You can mix any languages inside a single `<CodeGroup>`.

@@ -1,0 +1,71 @@
+---
+title: "Connect Your GitHub Repository to Mintlify"
+sidebarTitle: "Connect GitHub"
+description: "Link a GitHub repository to your Mintlify workspace so every push automatically deploys your documentation site."
+---
+
+Mintlify uses your GitHub repository as the single source of truth for your documentation. Once you connect a repository, every push to your default branch triggers an automatic redeployment — no manual publishing steps, no CI pipelines to configure. This page walks you through installing the Mintlify GitHub App, granting repository access, and confirming your first live deployment.
+
+<Warning>
+  Mintlify looks for `docs.json` at the repository root by default. If your docs live in a subdirectory (for example, `docs/`), you must configure the **docs root** in your Mintlify dashboard during setup. A missing or misconfigured `docs.json` path will cause your deployment to fail.
+</Warning>
+
+<Steps>
+  <Step title="Install the Mintlify GitHub App">
+    From your Mintlify dashboard, click **Connect Repository**. You'll be redirected to GitHub to install the **Mintlify GitHub App** on your GitHub account or organization. Click **Install** to proceed.
+
+    If you've already installed the app on a previous project, click **Configure** instead to update the repositories it can access.
+  </Step>
+
+  <Step title="Grant access to your docs repository">
+    During installation, GitHub asks which repositories the Mintlify app may access. Choose **Only select repositories** and pick the repository that contains your documentation. Avoid granting access to all repositories unless your organization requires it.
+
+    Once you confirm, GitHub redirects you back to the Mintlify dashboard with the repository available for selection.
+  </Step>
+
+  <Step title="Configure the docs root">
+    Select your repository from the list in the Mintlify dashboard. Then set the **Docs Root** — the directory path where your `docs.json` file lives:
+
+    | Scenario | Docs Root value |
+    |----------|-----------------|
+    | `docs.json` is at the repo root | `/` (default) |
+    | `docs.json` is inside `docs/` | `docs` |
+    | `docs.json` is inside `website/docs/` | `website/docs` |
+
+    Click **Save** to apply the configuration.
+  </Step>
+
+  <Step title="Push a commit to trigger your first deployment">
+    Make any small change to your repository — even updating a single line in `docs.json` — and push it to your default branch. Mintlify picks up the push event via the GitHub App webhook and starts a new deployment automatically.
+
+    You can monitor deployment status in real time from the **Deployments** tab in your Mintlify dashboard.
+
+    <Note>
+      Every subsequent push to your default branch triggers a new redeployment. Branch pushes and pull requests do not affect your live site, so you can safely iterate without fear of publishing work-in-progress content.
+    </Note>
+  </Step>
+
+  <Step title="View your live site">
+    Once the deployment completes, your documentation site is live at:
+
+    ```
+    https://your-workspace.mintlify.app
+    ```
+
+    You can also configure a **custom domain** (for example, `docs.yourcompany.com`) from **Settings → Custom Domain** in your dashboard.
+
+    To preview your docs locally before pushing, use the Mintlify CLI:
+
+    <CodeGroup>
+      ```bash npm
+      npx mintlify dev
+      ```
+
+      ```bash yarn
+      yarn mintlify dev
+      ```
+    </CodeGroup>
+
+    The CLI serves your site at `http://localhost:3000` with live reload, so you can see changes instantly as you write.
+  </Step>
+</Steps>

@@ -1,47 +1,74 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Mintlify in Minutes"
+sidebarTitle: "Quickstart"
+description: "Set up your Mintlify documentation site from scratch. Connect GitHub, write your first page, and deploy — all in under 10 minutes."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
+This guide walks you through everything you need to publish your first Mintlify documentation site. By the end, you'll have a live docs site connected to GitHub, configured with your branding, and ready for content — deployed automatically on every push.
 
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+<Note>
+  If you haven't created a Mintlify account yet, head to the [Account Setup](/getting-started/account-setup) page for a detailed walkthrough before continuing.
+</Note>
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
-
-    ```bash
-    npm install your-package
-    ```
+  <Step title="Create your Mintlify account">
+    Go to [mintlify.com](https://mintlify.com) and click **Get Started**. Sign up with your GitHub account or email address. Once you're in, Mintlify will prompt you to create your first workspace — give it a name and a unique slug that will become your default subdomain.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
-    ```
+  <Step title="Connect your GitHub repository">
+    From your Mintlify dashboard, click **Connect Repository**. Install the Mintlify GitHub App and grant it access to the repository that contains (or will contain) your docs. If you don't have a repo yet, select **Use a Template** to fork Mintlify's starter repository — it comes pre-configured and ready to customize.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+
+  <Step title="Configure docs.json">
+    At the root of your repository, create or update `docs.json` with your site's name, theme, brand colors, and navigation structure. The example below is a minimal starting point:
+
+    ```json docs.json
+    {
+      "$schema": "https://mintlify.com/docs.json",
+      "name": "My Docs",
+      "theme": "luma",
+      "colors": {
+        "primary": "#0F9B5B"
+      },
+      "navigation": {
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "quickstart"]
+          }
+        ]
+      }
+    }
+    ```
+
+    Every page listed under `navigation` maps to an MDX file in your repository. The value `"introduction"` resolves to `introduction.mdx` at the configured docs root.
+  </Step>
+
+  <Step title="Write your first MDX page">
+    Create `introduction.mdx` in your repository. Every MDX page starts with a frontmatter block that sets the title and description shown in the sidebar and search results:
+
+    ```mdx introduction.mdx
+    ---
+    title: "Welcome to My Docs"
+    description: "Everything you need to get up and running."
+    ---
+
+    Welcome! This is your first Mintlify page. Edit this file in your repository
+    and push to see your changes live.
+    ```
+
+    You can enrich your pages with Mintlify's built-in components — `<Note>`, `<Warning>`, `<Steps>`, `<CardGroup>`, and more — all without importing anything.
+  </Step>
+
+  <Step title="Push to GitHub to deploy">
+    Commit your `docs.json` and `introduction.mdx` files and push them to your default branch. Mintlify detects the push, builds your site, and publishes it automatically. Your live docs will be available at `your-workspace.mintlify.app` within a minute or two.
+
+    To preview changes locally before pushing, run the Mintlify CLI from your docs directory:
 
     ```bash
-    your-cli start
+    npx mintlify dev
     ```
+
+    Your site will be served at `http://localhost:3000` with hot reload enabled.
   </Step>
 </Steps>
-
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>

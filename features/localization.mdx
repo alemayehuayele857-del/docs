@@ -1,0 +1,63 @@
+---
+title: "Localize Your Mintlify Docs for International Audiences"
+sidebarTitle: "Localization"
+description: "Translate your Mintlify documentation into multiple languages and let readers switch between locales using the built-in language selector."
+---
+
+Mintlify makes it straightforward to serve your documentation in multiple languages so you can support readers around the world in their native language. Once you configure your locales, Mintlify handles the language switcher, URL routing, and fallback behavior automatically — you focus on writing the translations, and Mintlify takes care of the rest.
+
+## Setting up locales in docs.json
+
+Define your supported languages in `docs.json` under the `localization` key. Set a `defaultLocale` for readers who haven't selected a language, then list all supported locales in the `locales` array:
+
+```json
+"localization": {
+  "defaultLocale": "en",
+  "locales": ["en", "fr", "de", "es", "ja"]
+}
+```
+
+Use standard [BCP 47 language tags](https://www.ietf.org/rfc/bcp/bcp47.txt) for locale codes. The `defaultLocale` must also appear in the `locales` array.
+
+## File structure
+
+Translated pages live in locale-named subdirectories at the root of your docs. Mirror your existing page structure inside each locale folder:
+
+```
+/en/introduction.mdx
+/fr/introduction.mdx
+/de/introduction.mdx
+```
+
+Keep the filenames and directory structure identical across locales — Mintlify uses the path to match pages between languages and to determine which translation to serve for a given URL.
+
+## Language switcher
+
+When you configure two or more locales, Mintlify automatically adds a language switcher to the navbar. Readers use it to move between languages, and their selection is preserved as they navigate from page to page. No extra configuration is needed to enable the switcher.
+
+## Fallback behavior
+
+If a page hasn't been translated into the reader's selected locale, Mintlify automatically falls back to the default locale rather than showing a 404. This means you can publish a partially translated docs site without breaking the experience for readers whose language is incomplete — they'll see the default-language version of any untranslated page.
+
+<Note>
+  AI search works across all configured locales. Readers searching in French, German, Spanish, or any other configured language will get answers drawn from the translated content for that locale.
+</Note>
+
+## RTL support
+
+For right-to-left languages like Arabic (`ar`) and Hebrew (`he`), set the `"dir": "rtl"` property on the locale configuration. This tells Mintlify to flip the layout direction for that locale so text, navigation, and components render correctly for RTL readers.
+
+```json
+"localization": {
+  "defaultLocale": "en",
+  "locales": [
+    "en",
+    { "locale": "ar", "dir": "rtl" },
+    { "locale": "he", "dir": "rtl" }
+  ]
+}
+```
+
+<Tip>
+  Don't try to translate everything at once. Use your analytics dashboard to identify your most-visited pages and translate those first — that way, the readers who matter most get a localized experience as quickly as possible.
+</Tip>

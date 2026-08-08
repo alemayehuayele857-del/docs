@@ -1,0 +1,104 @@
+---
+title: "Mintlify Components: Cards, Callouts, Tabs, and More"
+sidebarTitle: "Components"
+description: "Explore the full library of built-in Mintlify MDX components including Cards, Steps, Tabs, Accordions, and callout blocks to enrich your docs."
+---
+
+Mintlify ships a comprehensive library of interactive UI components that you can drop directly into any MDX page. These components handle layout, visual hierarchy, and interactivity so you can focus on writing great content instead of building custom markup. Every component follows your site's theme automatically, ensuring a consistent look across your entire docs site.
+
+<Note>
+  All Mintlify components are globally available in every MDX file — no import statements required. Just use the component tags directly in your content.
+</Note>
+
+## Cards
+
+Cards are the standard way to build visual navigation grids and feature overviews. Wrap multiple `<Card>` elements in a `<CardGroup>` to control the column layout.
+
+```mdx
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Get up and running in minutes
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference">
+    Full API documentation
+  </Card>
+</CardGroup>
+```
+
+Each `<Card>` accepts a `title`, an optional `icon` (Font Awesome icon name), an optional `href` to make the card clickable, and child content for the card body. Set `cols` on `<CardGroup>` to `1`, `2`, `3`, or `4` depending on how many cards you want per row.
+
+## Steps
+
+Use `<Steps>` to walk readers through a sequential process. Each `<Step>` is numbered automatically, so you never have to update numbers when you reorder steps.
+
+```mdx
+<Steps>
+  <Step title="Install">
+    Run `npm install my-package`
+  </Step>
+  <Step title="Configure">
+    Create a config file.
+  </Step>
+</Steps>
+```
+
+You can include any MDX content inside a `<Step>` — code blocks, callouts, images, or nested components all render correctly.
+
+## Callouts
+
+Callouts draw the reader's attention to important information. Mintlify provides four semantic variants, each with a distinct color and icon:
+
+```mdx
+<Note>This is a note.</Note>
+<Warning>This action is irreversible.</Warning>
+<Info>Additional context here.</Info>
+<Tip>Best practice suggestion.</Tip>
+```
+
+Choose the variant that matches the intent of your message:
+
+- **`<Note>`** — General supplementary information worth calling out.
+- **`<Warning>`** — Destructive, irreversible, or potentially harmful actions.
+- **`<Info>`** — Neutral additional context that supports the main content.
+- **`<Tip>`** — Best practices, shortcuts, and helpful recommendations.
+
+## Tabs
+
+Tabs let you present multiple versions of the same content — such as code in different languages, or instructions for different operating systems — without duplicating the surrounding prose.
+
+```mdx
+<Tabs>
+  <Tab title="TypeScript">
+    TypeScript example here
+  </Tab>
+  <Tab title="Python">
+    Python example here
+  </Tab>
+</Tabs>
+```
+
+Each `<Tab>` requires a `title` string. Tab content can include any MDX, including code blocks and nested components.
+
+## Accordion
+
+Use `<Accordion>` for FAQ sections, optional detail, or reference material that most readers can skip. The content stays collapsed until the reader chooses to expand it.
+
+```mdx
+<Accordion title="How does billing work?">
+  You are billed monthly...
+</Accordion>
+```
+
+Group multiple accordions together with `<AccordionGroup>` to give them consistent styling and spacing as a set.
+
+## Frame
+
+`<Frame>` wraps images, screenshots, and iframes in a styled bordered container that matches your docs theme. Use it any time you want media to stand out from the surrounding text.
+
+```mdx
+<Frame>
+  <img src="/images/screenshot.png" alt="Dashboard screenshot" />
+</Frame>
+```
+
+`<Frame>` also accepts a `caption` prop to display a text label below the media, and a `type` prop set to `"glass"` for a softer background treatment.

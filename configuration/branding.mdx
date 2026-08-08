@@ -1,0 +1,81 @@
+---
+title: "Brand Your Mintlify Docs with Colors, Logo, and Themes"
+sidebarTitle: "Branding"
+description: "Customize your Mintlify documentation site with your brand colors, logo, favicon, and one of seven available visual themes."
+---
+
+Your documentation is an extension of your product, and Mintlify gives you the tools to make it feel that way. Through a handful of fields in `docs.json` you can apply your brand colors, swap in your logo, set a favicon, and choose from seven distinct visual themes — no CSS or design experience required.
+
+<Tip>
+  Use SVG files for your logo and favicon wherever possible. SVGs are resolution-independent, so they look sharp on every screen — from a 1080p monitor to a high-DPI laptop display — without bloating your repo with multiple sized assets.
+</Tip>
+
+## Themes
+
+Mintlify ships with seven built-in themes. Each theme defines the overall layout character, typography scale, and spacing rhythm of your site. Pick the one that best matches your product's personality and audience.
+
+| Theme | Best For |
+|-------|----------|
+| `luma` | Sleek, minimal. Developer-focused, API-driven products. |
+| `willow` | Minimal, elegant. Design-focused products. |
+| `palm` | Spacious, airy. Developer-focused products. |
+| `almond` | Soft, approachable. Consumer-facing products. |
+| `aspen` | Bold, technical. Infrastructure and DevOps. |
+| `maple` | Warm, sidebar-focused. Large doc sets. |
+| `sequoia` | Dense, information-rich. API-heavy products. |
+
+Set your theme in `docs.json`:
+
+```json docs.json
+{
+  "theme": "luma"
+}
+```
+
+If you omit the `theme` field, Mintlify defaults to `luma`.
+
+## Colors
+
+The `colors` object lets you apply your brand palette to interactive elements throughout your site — links, active sidebar items, buttons, and inline highlights.
+
+```json docs.json
+"colors": {
+  "primary": "#0F9B5B",
+  "light": "#07C983",
+  "dark": "#0D9373"
+}
+```
+
+- **`primary`** is the baseline brand color. It is used for links and call-to-action elements when no mode-specific override is set.
+- **`light`** is applied in light mode contexts. Provide a brighter or more saturated variant of your primary color to ensure it remains legible on white and near-white backgrounds.
+- **`dark`** is applied in dark mode contexts. Provide a deeper or slightly desaturated variant to keep contrast high against dark backgrounds.
+
+All three fields accept six-character hex values (e.g., `#0F9B5B`). You can omit `light` and `dark` — Mintlify will fall back to `primary` for both modes — but setting all three gives you the most control over how your brand reads across light and dark themes.
+
+## Logo
+
+Supply separate logo files for light and dark modes so your logo always looks its best regardless of which theme a reader prefers.
+
+```json docs.json
+"logo": {
+  "light": "/logo/light.svg",
+  "dark": "/logo/dark.svg",
+  "href": "/"
+}
+```
+
+- **`light`** — the logo displayed when the site is in light mode. Use your standard logo with dark text or marks.
+- **`dark`** — the logo displayed when the site is in dark mode. Use an inverted or light-on-transparent version of your logo.
+- **`href`** — the URL the logo links to when clicked. Defaults to `/`. Set this to your marketing site (e.g., `https://myproduct.com`) if you want the logo to take readers outside the docs.
+
+Store your logo files under a `/logo/` directory in the root of your docs repository and reference them with a leading slash. Mintlify recommends logos no wider than approximately 150px to keep the navbar balanced.
+
+## Favicon
+
+The favicon appears in browser tabs, bookmarks, and search result snippets. Set it with a single path string:
+
+```json docs.json
+"favicon": "/favicon.svg"
+```
+
+SVG favicons are supported in all modern browsers and scale perfectly at any size. If you use a PNG instead, export it at 32×32px for standard displays. Place the file at the root of your docs repository (e.g., `/favicon.svg` or `/favicon.png`) and reference it with a leading slash.

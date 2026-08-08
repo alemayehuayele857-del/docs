@@ -1,0 +1,83 @@
+---
+title: "Mintlify MCP: Connect Your Docs to AI Coding Agents"
+sidebarTitle: "MCP"
+description: "The Mintlify MCP server exposes your documentation to AI coding assistants like Cursor, Claude, and VS Code Copilot so they can answer questions from your docs."
+---
+
+AI coding assistants are only as helpful as the context they can access. By connecting Mintlify to your AI tools via the Model Context Protocol, you give those assistants direct access to your documentation — so they can answer questions, surface code examples, and explain your API without you pasting content into the chat window manually.
+
+## What is MCP?
+
+Model Context Protocol (MCP) is an open standard that lets AI assistants query external knowledge sources at runtime. Instead of relying solely on their training data, MCP-enabled assistants can call out to a server, retrieve relevant content, and use it to ground their responses.
+
+Mintlify implements an MCP server for every published docs site. When you connect your AI tool to Mintlify's MCP endpoint, the assistant can search your docs, fetch page content, and answer questions about your product — all from within the IDE or chat interface your team already uses.
+
+<Info>
+  The MCP endpoint is automatically available for all published Mintlify docs sites. You do not need to configure or host anything extra — just point your AI tool at your docs URL.
+</Info>
+
+## Connecting Mintlify MCP to Cursor
+
+Add the following entry to your Cursor MCP settings (found at **Cursor → Settings → MCP**). Replace the `--docs` URL with your own published docs URL:
+
+```json cursor settings
+{
+  "mcpServers": {
+    "mintlify": {
+      "command": "npx",
+      "args": ["-y", "@mintlify/mcp", "--docs", "https://your-docs.mintlify.app"]
+    }
+  }
+}
+```
+
+After saving, Cursor will show **mintlify** as an available MCP server. Ask Cursor anything about your docs and it will query your site for an answer.
+
+## Connecting to Claude Desktop
+
+Open your Claude Desktop configuration file (`claude_desktop_config.json`) and add the `mintlify` entry under `mcpServers`:
+
+```json claude_desktop_config.json
+{
+  "mcpServers": {
+    "mintlify": {
+      "command": "npx",
+      "args": ["-y", "@mintlify/mcp", "--docs", "https://your-docs.mintlify.app"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop after saving. Claude will now retrieve content from your docs when answering questions in projects that have the MCP server enabled.
+
+## What AI agents can do
+
+Once connected, AI assistants can:
+
+- **Search your docs** — find relevant pages based on a natural-language query
+- **Retrieve page content** — fetch the full text of any page in your docs site
+- **Answer API questions** — describe endpoints, parameters, and response schemas from your API reference
+- **Suggest code examples** — surface and adapt code samples directly from your documentation
+
+The assistant cites which page it pulled from, so your team can follow up with the source material.
+
+## Using in VS Code
+
+Mintlify MCP works with **GitHub Copilot Chat** in VS Code. Add the MCP configuration to your VS Code workspace settings file (`.vscode/settings.json`):
+
+```json .vscode/settings.json
+{
+  "mcp.servers": {
+    "mintlify": {
+      "command": "npx",
+      "args": ["-y", "@mintlify/mcp", "--docs", "https://your-docs.mintlify.app"]
+    }
+  }
+}
+```
+
+Commit this file to your repository so every contributor on your team gets the same MCP context automatically when they open the project in VS Code.
+
+<Tip>
+  You can also click the **MCP** button in your published Mintlify docs site to copy the pre-filled configuration snippet for your workspace URL — no manual editing required.
+</Tip>

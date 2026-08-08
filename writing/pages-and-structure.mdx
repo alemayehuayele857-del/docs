@@ -1,0 +1,92 @@
+---
+title: "Pages, Folders, and Doc Structure in Mintlify"
+sidebarTitle: "Pages & Structure"
+description: "Learn how to organize your Mintlify documentation using MDX pages, folders, and frontmatter fields to create a clear, navigable structure."
+---
+
+Every page in your Mintlify docs site is a single MDX file. Mintlify reads the file's path to build its URL slug, reads its frontmatter to populate the sidebar and browser tab, and renders the rest of the file as your page content. Understanding how files map to pages — and how frontmatter fields shape navigation — gives you full control over your documentation structure from day one.
+
+## MDX Files and URL Slugs
+
+Each `.mdx` file you create becomes exactly one page. The file's path relative to your docs root determines its URL. A file at `guides/authentication.mdx` is served at `/guides/authentication`. Keep file names lowercase, hyphen-separated, and descriptive so your URLs are readable without any extra configuration.
+
+```
+docs/
+├── introduction.mdx        → /introduction
+├── quickstart.mdx          → /quickstart
+└── guides/
+    ├── authentication.mdx  → /guides/authentication
+    └── rate-limits.mdx     → /guides/rate-limits
+```
+
+## Required Frontmatter
+
+Every MDX page must include a `title` and a `description` in its frontmatter block. These two fields are the minimum Mintlify needs to render the page header and generate accurate SEO metadata.
+
+```mdx
+---
+title: "Your Page Title"
+description: "A short, accurate summary of what this page covers."
+---
+```
+
+## Recommended Frontmatter
+
+Beyond the required fields, two additional fields significantly improve the sidebar experience for your readers.
+
+- **`sidebarTitle`** — A shorter label used only in the sidebar navigation. Use this when your full page title is too long to scan quickly in a nav column.
+- **`icon`** — A [Font Awesome](https://fontawesome.com/icons) icon name rendered next to the title in the sidebar. Icons add visual landmarks that help readers find sections at a glance.
+
+<Tip>
+  Keep your `sidebarTitle` to 1–3 words. Sidebar labels that spill onto two lines make navigation harder to scan, especially on mobile.
+</Tip>
+
+## Frontmatter Reference
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | string | Page title shown in the browser tab and page header |
+| `description` | string | Short description used for SEO and link previews |
+| `sidebarTitle` | string | Shorter label displayed in the sidebar navigation |
+| `icon` | string | Font Awesome icon name shown next to the sidebar title |
+| `mode` | string | Page display mode — `"wide"` or `"custom"` |
+
+## Organizing Pages into Folders
+
+Group related pages by placing them in a named subfolder. The folder name becomes a URL prefix, and you reference the folder as a navigation group in your `docs.json` configuration. You do not need any special index file — folders are purely organizational.
+
+```
+api-reference/
+├── authentication.mdx   → /api-reference/authentication
+├── endpoints.mdx        → /api-reference/endpoints
+└── errors.mdx           → /api-reference/errors
+```
+
+## Linking Between Pages
+
+Use standard relative Markdown links to connect pages within your docs. Reference pages by their path relative to the current file, without the `.mdx` extension.
+
+```mdx
+See the [authentication guide](/api-reference/authentication) for details.
+
+Or use a relative path: [rate limits](../guides/rate-limits).
+```
+
+Absolute paths starting with `/` are resolved from your docs root and are the most predictable option when linking across nested folders.
+
+## Complete Page Example
+
+Here is a well-structured MDX page that uses all the key frontmatter fields:
+
+```mdx introduction.mdx
+---
+title: "Introduction to My Product"
+sidebarTitle: "Introduction"
+description: "Learn what My Product does and how to get started."
+icon: "rocket"
+---
+
+Welcome to My Product. This guide covers...
+```
+
+This page renders with the full title in the browser tab and page header, displays "Introduction" with a rocket icon in the sidebar, and uses the description for SEO and social link previews.

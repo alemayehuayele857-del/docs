@@ -1,0 +1,137 @@
+---
+title: "Migrate Your Existing Docs to Mintlify"
+sidebarTitle: "Migrating to Mintlify"
+description: "Move your documentation from GitBook, Notion, Readme, Docusaurus, or another platform to Mintlify with step-by-step migration instructions."
+---
+
+Teams migrate to Mintlify to get a faster, more polished docs experience — one that includes built-in AI search, interactive API references, and a GitHub-native workflow. Migration typically means exporting your existing content as Markdown, restructuring it into MDX files with frontmatter, and wiring up navigation in a `docs.json` file. The process usually takes a few hours for small sites and a day or two for larger ones.
+
+## Platform-Specific Migration Steps
+
+<Tabs>
+  <Tab title="From GitBook">
+    <Steps>
+      <Step title="Export your GitBook space as Markdown">
+        In GitBook, open your space and go to **Settings → Export**. Choose **Export as Markdown**. GitBook produces a ZIP archive of `.md` files mirroring your space structure.
+      </Step>
+      <Step title="Rename files to .mdx">
+        Mintlify uses MDX. Rename every `.md` file to `.mdx` so the build pipeline processes them correctly. On macOS or Linux you can run:
+
+        ```bash
+        find . -name "*.md" -exec sh -c 'mv "$1" "${1%.md}.mdx"' _ {} \;
+        ```
+      </Step>
+      <Step title="Add frontmatter to each page">
+        GitBook exports do not include frontmatter. Open each `.mdx` file and add a block at the top:
+
+        ```mdx
+        ---
+        title: "Your Page Title"
+        description: "A one-sentence summary of this page."
+        ---
+        ```
+      </Step>
+      <Step title="Create docs.json and map your navigation">
+        Create a `docs.json` at the root of your repo. Use the folder and file names from your GitBook export to build the `navigation` structure. See the [docs.json reference](/configuration/docs-json) for the full schema.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="From Notion">
+    <Steps>
+      <Step title="Export pages as Markdown & CSV">
+        In Notion, select the pages you want to export, then go to **Settings → Export content → Markdown & CSV**. Download the ZIP and unpack it.
+      </Step>
+      <Step title="Clean up Notion-specific formatting">
+        Notion exports often include database tables, toggle blocks, and callout syntax that does not render in standard MDX. Replace Notion callouts with Mintlify's `<Note>`, `<Warning>`, or `<Tip>` components, and remove any unsupported embed syntax.
+      </Step>
+      <Step title="Add MDX frontmatter">
+        Notion exports use the page title as a Markdown heading, not as frontmatter. Remove the first `#` heading from each file and replace it with a proper frontmatter block:
+
+        ```mdx
+        ---
+        title: "Your Page Title"
+        description: "A one-sentence summary of this page."
+        ---
+        ```
+      </Step>
+      <Step title="Create docs.json">
+        Build your `docs.json` navigation from scratch. Group pages logically — Notion's flat database structure rarely maps one-to-one to a sidebar hierarchy.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="From Docusaurus">
+    <Steps>
+      <Step title="Copy your .md and .mdx files">
+        Docusaurus stores docs in a `docs/` directory. Copy those files directly into your Mintlify repo. Most standard Markdown content will render without changes.
+      </Step>
+      <Step title="Update frontmatter field names">
+        Docusaurus uses different frontmatter keys from Mintlify. Update the following fields in every file:
+
+        | Docusaurus field | Mintlify equivalent |
+        |---|---|
+        | `sidebar_label` | `sidebarTitle` |
+        | `sidebar_position` | (handled by `docs.json` order) |
+        | `custom_edit_url` | (not needed) |
+        | `hide_title: true` | (remove; Mintlify always renders the title) |
+      </Step>
+      <Step title="Convert navigation to docs.json format">
+        Docusaurus navigation lives in `docusaurus.config.js` and `sidebars.js`. Translate the sidebar structure into a Mintlify `docs.json` `navigation` array. Each `category` in Docusaurus becomes a `group` in Mintlify.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="From Readme.com">
+    <Steps>
+      <Step title="Export docs via Readme's export feature">
+        In your Readme project, go to **Project Settings → Export**. Download the Markdown export. Each doc page becomes a separate `.md` file.
+      </Step>
+      <Step title="Convert to MDX with frontmatter">
+        Rename files to `.mdx`. Readme exports include some metadata as HTML comments — strip those out and replace them with clean frontmatter:
+
+        ```mdx
+        ---
+        title: "Your Page Title"
+        description: "A one-sentence summary of this page."
+        ---
+        ```
+      </Step>
+      <Step title="Re-create navigation in docs.json">
+        Readme organizes docs into categories. Reproduce that hierarchy in your `docs.json` `navigation` block, with each Readme category becoming a Mintlify `group`.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## General Migration Checklist
+
+Use this checklist for any platform migration, regardless of where your docs are coming from.
+
+<Steps>
+  <Step title="Export existing content as Markdown">
+    Download or copy all your existing documentation as plain Markdown or MDX. Preserve your folder structure — it will form the basis of your URL paths in Mintlify.
+  </Step>
+  <Step title="Add MDX frontmatter to each file">
+    Every page needs at minimum a `title` field in its frontmatter. A `description` field is strongly recommended for SEO and AI search. Add these to each `.mdx` file before continuing.
+  </Step>
+  <Step title="Create docs.json with your site configuration">
+    Create a `docs.json` at the root of your repository. Define your `name`, `navigation`, and any global settings like `logo`, `colors`, and `topbar` links. Refer to the [configuration reference](/configuration/docs-json) for all available options.
+  </Step>
+  <Step title="Install the Mintlify GitHub App and connect your repo">
+    Go to [mintlify.com/start](https://mintlify.com/start), sign in, and follow the prompts to install the Mintlify GitHub App on the repository that holds your docs. Mintlify deploys automatically on every push to your default branch.
+  </Step>
+  <Step title="Review deployment and fix broken links">
+    After your first successful deployment, browse through the live site and check for broken internal links, missing images, and pages that appear in the wrong place in the sidebar.
+  </Step>
+  <Step title="Set up a custom domain (optional)">
+    On a paid plan, navigate to **Dashboard → Settings → Domains** and add your custom domain. Add the required CNAME record in your DNS provider. See the [custom domain guide](/configuration/custom-domain) for details.
+  </Step>
+  <Step title="Update external links pointing to your old docs URL">
+    Search your codebase, README files, marketing site, and any other places where you link to your old documentation URL. Update them to point to your new Mintlify site.
+  </Step>
+</Steps>
+
+<Tip>
+  After migration, run `npx mintlify broken-links` in your repo to automatically scan every page in your navigation and report any links that resolve to a 404. Fix all reported links before announcing the new docs site to your users.
+</Tip>

@@ -1,0 +1,55 @@
+---
+title: "Documentation Analytics: Track Reader Engagement"
+sidebarTitle: "Analytics"
+description: "Use Mintlify's built-in analytics to understand which pages readers visit, how long they stay, and what they search for to improve your documentation."
+---
+
+Mintlify gives you a built-in analytics dashboard so you can make evidence-based decisions about your documentation. Instead of guessing which pages need work or which topics are missing, you can see exactly how readers interact with your docs — what they read, how long they stay, and crucially, what they search for but can't find.
+
+## Dashboard overview
+
+Your analytics dashboard is available directly in your Mintlify workspace. No additional setup or third-party account is needed to access it. Open your workspace, navigate to the Analytics section, and you'll find all your docs metrics in one place.
+
+<Info>
+  Analytics data is available from the day you first publish your docs site — your full historical data is retained and accessible at any time.
+</Info>
+
+## Metrics tracked
+
+The dashboard surfaces the metrics that matter most for documentation quality:
+
+- **Page views and unique visitors** — understand overall traffic and how it trends over time
+- **Top pages** — identify your most-read content so you know what to keep sharp and up to date
+- **Top exit pages** — spot where readers drop off, which often signals confusing or incomplete content
+- **Search queries** — see the exact terms and questions readers type into your search bar
+- **Average time on page** — gauge whether readers are engaging deeply or bouncing quickly
+
+## Date range filters
+
+Filter all metrics by a preset range — **7 days**, **30 days**, or **90 days** — or set a custom date range to examine a specific period. This makes it easy to measure the impact of a documentation update or correlate traffic with a product launch.
+
+## Search analytics
+
+The search queries report is one of the most valuable tools in the dashboard. It shows you every term readers searched for, ranked by frequency. Pay close attention to:
+
+- **High-frequency queries with no good result** — these are content gaps you should fill
+- **Repeated variations of the same question** — signals that an existing page may need a clearer title or better structure
+- **Unexpected queries** — topics you didn't know readers cared about
+
+<Tip>
+  Review your top search queries weekly and use them to prioritize new documentation topics. A reader who searches and finds nothing is a reader who may give up — or file a support ticket.
+</Tip>
+
+## Integrating external analytics
+
+Mintlify's built-in analytics covers the essentials, but you can also layer in your own analytics tools for deeper behavioral analysis or to unify docs data with the rest of your product metrics. Add integrations via `docs.json`:
+
+```json
+"integrations": {
+  "gtm": {
+    "tagId": "GTM-XXXXXXXX"
+  }
+}
+```
+
+Mintlify supports a wide range of third-party analytics platforms, including **Segment**, **PostHog**, **Amplitude**, **Koala**, **Hotjar**, **Fathom**, **Plausible**, **Clearbit**, **Heap**, and **Mixpanel**. Each integration is configured under the `integrations` key in `docs.json` using that provider's required credentials.

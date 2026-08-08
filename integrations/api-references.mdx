@@ -1,0 +1,102 @@
+---
+title: "Auto-Generate API Reference Docs from OpenAPI Specs"
+sidebarTitle: "API References"
+description: "Point Mintlify at your OpenAPI or Swagger specification file to automatically generate a beautiful, interactive API reference with try-it-out functionality."
+---
+
+Mintlify reads your OpenAPI or Swagger specification and turns it into a fully interactive API reference — complete with request and response schemas, authentication inputs, and a live **Try It Out** panel. You maintain one spec file, and Mintlify keeps your docs in sync automatically on every deploy.
+
+## Supported formats
+
+Mintlify supports the following specification formats:
+
+| Format | Versions |
+|---|---|
+| OpenAPI | 3.0, 3.1 |
+| Swagger | 2.0 |
+
+Both **JSON** and **YAML** file formats are accepted.
+
+## Configuring your spec in docs.json
+
+Point Mintlify at your spec by adding an `openapi` field to `docs.json`. You can reference a public URL:
+
+```json
+"openapi": "https://api.example.com/openapi.json"
+```
+
+Or a local file committed to your repository:
+
+```json
+"openapi": "/openapi.yaml"
+```
+
+Mintlify re-fetches a URL-based spec on every deploy, so your API reference stays current whenever your backend changes. For a local file, commit the updated spec to trigger a rebuild.
+
+<Tip>
+  Host your OpenAPI spec at a public URL (for example, served directly by your API server at `/openapi.json`) so Mintlify always pulls the latest version automatically on each deploy — no manual file updates required.
+</Tip>
+
+## Adding API pages to navigation
+
+Reference your API operations in the `navigation` array inside `docs.json` using the page paths that correspond to your spec's operation IDs:
+
+```json
+{
+  "group": "API Reference",
+  "pages": [
+    "api-reference/users/get-users",
+    "api-reference/users/create-user"
+  ]
+}
+```
+
+Each entry maps to an MDX file in your repository that ties the page to a specific operation in your spec.
+
+## MDX files for API pages
+
+Each API page needs a minimal MDX file. The `openapi` frontmatter field identifies the HTTP method and path from your spec:
+
+```mdx api-reference/users/get-users.mdx
+---
+title: "Get Users"
+openapi: "GET /users"
+---
+```
+
+Mintlify generates the full schema documentation, parameter tables, and example responses from your spec automatically. You can add additional prose or components above or below the generated content inside the MDX file.
+
+## Try It Out
+
+Readers can send real API requests directly from your docs using the **Try It Out** panel. They fill in path parameters, query strings, request bodies, and authentication credentials, then fire the request and see the live response — without leaving your documentation.
+
+To enable Try It Out, ensure your OpenAPI spec includes a valid `servers` entry pointing to your API:
+
+```yaml
+servers:
+  - url: https://api.example.com/v1
+```
+
+## Authentication display
+
+Mintlify reads the `securitySchemes` block in your OpenAPI spec and automatically renders the appropriate authentication input fields — API key fields, Bearer token inputs, or OAuth flows. Readers enter their credentials once, and Mintlify applies them to every Try It Out request on the page.
+
+Define your security scheme in your spec:
+
+```yaml
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+```
+
+## Keeping the spec in sync
+
+- **Remote URL**: Mintlify re-fetches the spec on every deploy. Push any change to your repository to trigger a fresh fetch.
+- **Local file**: Commit the updated `openapi.yaml` or `openapi.json` to your repository. The next deploy picks up the changes automatically.
+
+<Note>
+  If you do not have an OpenAPI spec yet, try the **Mintlify Scraper** tool. It crawls your existing REST API and generates an OpenAPI specification you can commit directly to your repository.
+</Note>

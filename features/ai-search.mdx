@@ -1,0 +1,62 @@
+---
+title: "AI-Powered Search and Chat for Your Documentation"
+sidebarTitle: "AI Search"
+description: "Mintlify's built-in AI search lets readers find answers instantly using natural language queries and interactive chat across your entire docs site."
+---
+
+Mintlify includes AI-powered search on every docs site by default — no configuration required. Readers can type questions in plain language and get direct, contextual answers drawn from your content, rather than sifting through a list of links. The AI understands your docs holistically, so it can surface the right answer even when the reader's phrasing doesn't match your exact wording.
+
+## How it works
+
+Each time you deploy, Mintlify automatically indexes all of your MDX content. The AI uses that index to understand the structure, headings, code samples, and prose across every page. When a reader asks a question, the AI retrieves the most relevant content and composes a response grounded in your documentation — with links back to the source pages.
+
+<Note>
+  Search index updates complete within minutes after each deployment, so your readers always get answers based on your latest content.
+</Note>
+
+## Zero setup required
+
+AI search is enabled on all Mintlify plans out of the box. You don't need to connect an external search provider, manage API keys, or write any configuration to get started. The moment your docs site is live, search is live.
+
+## The chat experience
+
+The search interface is more than a keyword lookup. Readers can:
+
+- Ask questions in natural language, including multi-part questions
+- Receive direct answers with relevant code snippets inline
+- Ask follow-up questions in the same session for deeper exploration
+- Navigate directly to the source page from any answer
+
+The chat interface remembers context within a session, so readers can refine their question without starting over.
+
+## Keyboard shortcut
+
+Readers can open the search interface at any time by pressing `Cmd+K` on Mac or `Ctrl+K` on Windows. This shortcut works from any page on your docs site, making search instantly accessible without reaching for the mouse.
+
+## Customizing the AI persona
+
+You can give the AI assistant a custom display name to match your product's voice. Set the `assistantDisplayName` field in your `docs.json`:
+
+```json
+"ai": {
+  "assistantDisplayName": "Docs Assistant"
+}
+```
+
+The display name appears in the chat interface header and in responses, so it feels like a natural extension of your product rather than a generic tool.
+
+## Controlling what gets indexed
+
+If certain pages contain sensitive, incomplete, or otherwise unsearchable content, you can exclude them from the AI index. Add the `excludeFromSearch` flag to the page's frontmatter:
+
+```mdx
+---
+excludeFromSearch: true
+---
+```
+
+Excluded pages won't appear in search results or be used to generate AI answers. All other pages are indexed automatically.
+
+<Tip>
+  Write clear, descriptive headings and frontmatter descriptions on every page. The AI uses these signals heavily when matching reader questions to content, so well-structured pages return more accurate and useful answers.
+</Tip>

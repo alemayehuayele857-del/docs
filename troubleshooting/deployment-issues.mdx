@@ -1,0 +1,86 @@
+---
+title: "Fix Common Mintlify Deployment and Build Errors"
+sidebarTitle: "Deployment Issues"
+description: "Diagnose and fix the most common Mintlify deployment failures, including missing pages, broken navigation, invalid docs.json, and GitHub connectivity problems."
+---
+
+When a Mintlify deployment fails or produces unexpected results, the first place to look is the deployment log. Open your Mintlify dashboard, navigate to **Deployments**, and click on the failed deployment to see the full build output. Most errors are accompanied by a clear message pointing to the file and line causing the problem. Work through the issues below if you need more detailed guidance.
+
+<AccordionGroup>
+  <Accordion title="My deployment is stuck or not triggering">
+    If a push to your default branch doesn't start a new deployment within a minute or two, check the following:
+
+    - **Confirm the Mintlify GitHub App is installed.** Go to **GitHub → Settings → Applications → Installed GitHub Apps** and verify that Mintlify is listed. If it's missing, re-install it from your Mintlify dashboard under **Settings → GitHub**.
+    - **Confirm the app has access to the correct repository.** In GitHub, click **Configure** next to the Mintlify app and check that your docs repository is in the list of repositories the app can access. If it isn't, add it.
+    - **Ensure you pushed to the default branch.** Mintlify only auto-deploys from your default branch (usually `main` or `master`). Pushes to feature branches create preview deployments via pull requests but do not update the live site.
+    - **Re-trigger manually.** In the Mintlify dashboard, go to **Deployments** and click **Redeploy** on the most recent deployment to force a fresh build without pushing new code.
+  </Accordion>
+
+  <Accordion title="Invalid docs.json — validation error">
+    A malformed `docs.json` will fail the build immediately. To see the exact validation error before pushing:
+
+    ```bash
+    npx mintlify validate
+    ```
+
+    Run this command in the root of your docs repository. It reports every schema violation with a file path and line number.
+
+    **Common mistakes to check:**
+
+    - **Navigation is an array at the top level instead of an object.** The `navigation` field must be an array nested inside the top-level `docs.json` object, not the root value.
+    - **Missing required `$schema` field.** Some versions of the Mintlify config require a `$schema` declaration at the top of `docs.json`. Check the [configuration reference](/configuration/docs-json) for the correct value.
+    - **Trailing commas.** JSON does not allow trailing commas after the last item in an array or object. Use a JSON linter to catch these quickly.
+    - **Page paths that include the file extension.** Navigation `pages` entries should omit the `.mdx` extension — use `"guides/quickstart"` not `"guides/quickstart.mdx"`.
+  </Accordion>
+
+  <Accordion title="Pages show 404 Not Found">
+    A page returning 404 means Mintlify cannot find a matching file for that URL. Work through these checks in order:
+
+    - **Confirm the page is listed in docs.json navigation.** A page file that exists on disk but isn't referenced in the `pages` array of any navigation group will not be deployed. Add it to the appropriate group.
+    - **Verify the file path matches the page slug exactly.** Mintlify slugs are case-sensitive. A file named `guides/QuickStart.mdx` and a navigation entry of `"guides/quickstart"` will not match. Rename the file or update the navigation entry to match exactly.
+    - **Run the broken-links checker.** After deployment, run the following to get a report of every navigation entry that doesn't resolve to a real file:
+
+      ```bash
+      npx mintlify broken-links
+      ```
+  </Accordion>
+
+  <Accordion title="Images not loading">
+    Images that work locally sometimes fail in production. The most common causes are:
+
+    - **The image file isn't committed to the repository.** If the image is listed in `.gitignore` or was never staged, it won't be present during the build. Run `git status` to confirm the image file is tracked.
+    - **The file path is incorrect.** Image paths in Mintlify are relative to the **repo root**, not to the MDX file containing the reference. A path like `../../images/diagram.png` in a deeply nested file may not resolve correctly. Use an absolute path from the repo root instead: `/images/diagram.png`.
+    - **External image URLs are blocked or slow.** If you're referencing an image hosted at an external URL, confirm that URL is publicly accessible. External images load fine and are not bundled into the build.
+  </Accordion>
+
+  <Accordion title="GitHub App disconnected">
+    If Mintlify loses access to your GitHub repository, deployments stop triggering. To reconnect:
+
+    1. Go to **GitHub → Settings → Applications → Authorized GitHub Apps**.
+    2. Find the Mintlify app in the list and click **Revoke**, then re-authorize it.
+    3. Return to your Mintlify dashboard → **Settings → GitHub** and reconnect the repository.
+    4. Ensure the app has access to the specific repository under **GitHub → Settings → Applications → Installed GitHub Apps → Configure**.
+
+    After reconnecting, push a small change to your default branch to confirm deployments are working again.
+  </Accordion>
+
+  <Accordion title="Custom domain not working">
+    Custom domain issues almost always come down to DNS configuration or a mismatch between your DNS settings and what Mintlify expects.
+
+    - **Verify your CNAME record is set correctly.** Use `dig` to check what your domain currently resolves to:
+
+      ```bash
+      dig docs.example.com CNAME
+      ```
+
+      The answer should point to the Mintlify-provided target hostname shown in your dashboard under **Settings → Domains**.
+
+    - **Wait for DNS propagation.** DNS changes can take anywhere from a few minutes to 48 hours to propagate globally. If the record looks correct in `dig` but the site isn't loading, wait and try again.
+    - **Confirm the domain is configured in both places.** You need to add the domain in your **DNS provider** (as a CNAME record) AND in your **Mintlify dashboard** (under Settings → Domains). One without the other will not work.
+    - **Check for HTTPS certificate issues.** Mintlify provisions TLS certificates automatically, but the certificate can only be issued after DNS is correctly pointed at Mintlify. If you see a certificate warning, confirm DNS is correct and wait up to 30 minutes for the certificate to provision.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  If you've worked through the steps above and still can't resolve the issue, the Mintlify community Discord is the fastest place to get help. Post your deployment log output, your `docs.json`, and a description of what you've already tried. You can find the invite link at [mintlify.com/community](https://mintlify.com/community).
+</Note>

@@ -1,0 +1,118 @@
+---
+title: "Images, Videos, and Media in Your Mintlify Docs"
+sidebarTitle: "Images & Media"
+description: "Embed images, screenshots, videos, and iframes in your Mintlify documentation pages with proper sizing, captions, and dark mode support."
+---
+
+Visual media — screenshots, diagrams, demo videos, and interactive embeds — makes documentation faster to understand and easier to follow. Mintlify supports all standard media types directly in MDX, and provides the `<Frame>` component to give images and embeds a consistent, polished presentation that adapts to your site's theme automatically.
+
+## Storing Images
+
+Keep all local images inside an `/images/` folder at the root of your docs repository. Mintlify serves files from this folder as static assets and resolves them correctly in both local preview and production builds.
+
+```
+docs/
+├── images/
+│   ├── dashboard-screenshot.png
+│   ├── architecture-diagram.svg
+│   └── logo-dark.png
+├── introduction.mdx
+└── quickstart.mdx
+```
+
+You can also reference external image URLs hosted on a CDN or any public server. Use local `/images/` storage for screenshots and diagrams you own, and external URLs for third-party assets.
+
+<Info>
+  Mintlify automatically optimizes images stored in your `/images/` folder — resizing them for each device, converting to modern formats where supported, and serving them via a global CDN. You do not need to pre-process or compress images before adding them to your repo.
+</Info>
+
+## Basic Markdown Image Syntax
+
+Embed an image using standard Markdown syntax. Always include descriptive alt text between the square brackets.
+
+```mdx
+![The main dashboard showing active projects and usage metrics](/images/dashboard-screenshot.png)
+```
+
+Use this syntax for inline images that sit naturally in the flow of your content. For images that should stand out as figures — such as annotated screenshots or architecture diagrams — use `<Frame>` instead.
+
+<Tip>
+  Write alt text that describes what the image shows, not just what it is. "Dashboard screenshot" is weak; "The main dashboard showing active projects and usage metrics" gives screen reader users and search engines the context they need.
+</Tip>
+
+## Using Frame for Styled Images
+
+`<Frame>` wraps an image in a bordered container with rounded corners and a subtle shadow, making it visually distinct from the surrounding text. Add a `caption` prop to display a label below the image.
+
+```mdx
+<Frame caption="The project dashboard after completing onboarding.">
+  <img src="/images/dashboard-screenshot.png" alt="Project dashboard showing three active projects" />
+</Frame>
+```
+
+Use `type="glass"` for a softer background treatment that works well for dark screenshots on a light-mode page.
+
+```mdx
+<Frame type="glass">
+  <img src="/images/terminal-output.png" alt="Terminal showing a successful deployment" />
+</Frame>
+```
+
+## Dark Mode Images
+
+When your docs site supports dark mode, some images — particularly those with white backgrounds — look jarring in dark mode. Provide separate light and dark variants by placing them inside a `<Frame>` and using the `className` prop to conditionally show each image.
+
+```mdx
+<Frame>
+  <img
+    className="block dark:hidden"
+    src="/images/diagram-light.png"
+    alt="Architecture diagram showing three services"
+  />
+  <img
+    className="hidden dark:block"
+    src="/images/diagram-dark.png"
+    alt="Architecture diagram showing three services"
+  />
+</Frame>
+```
+
+The `block dark:hidden` and `hidden dark:block` utility classes toggle visibility based on the active color scheme.
+
+## Embedding YouTube Videos
+
+Embed YouTube videos using a standard `<iframe>` tag. Set `width` and `height` to maintain the correct 16:9 aspect ratio, and replace `VIDEO_ID` with the video's YouTube identifier.
+
+```mdx
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/VIDEO_ID"
+  title="Demo video"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+/>
+```
+
+You can find the `VIDEO_ID` in any YouTube URL: `https://www.youtube.com/watch?v=VIDEO_ID`.
+
+## Wrapping Iframes with Frame
+
+Wrap `<iframe>` elements in `<Frame>` to give them the same consistent border and spacing as your other media. This is especially useful when mixing video embeds with image figures on the same page.
+
+```mdx
+<Frame caption="A two-minute walkthrough of the onboarding flow.">
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/VIDEO_ID"
+    title="Onboarding walkthrough"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+</Frame>
+```
+
+The `<Frame>` wrapper constrains the iframe to your content column width and adds a caption below it, so readers know what they are about to watch before they press play.
